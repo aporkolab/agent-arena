@@ -11,7 +11,7 @@
     "arena": "node scripts/arena.mjs"
   },
   "devDependencies": {
-    "@types/node": "22.15.30",
+    "@types/node": "26.6.4",
     "typescript": "5.8.3"
   }
 }
