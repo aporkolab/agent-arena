@@ -1,0 +1,8 @@
+{
+  "id": "retry-policy",
+  "title": "Put a ceiling on retries",
+  "language": "java",
+  "summary": "Repair retry eligibility, attempt boundaries, server hints and overflow-safe exponential backoff.",
+  "editableFiles": ["src/Task.java"],
+  "expectedTests": 17
+}

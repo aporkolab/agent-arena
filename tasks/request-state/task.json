@@ -1,0 +1,8 @@
+{
+  "id": "request-state",
+  "title": "Keep stale responses out of the UI",
+  "language": "typescript",
+  "summary": "Repair a pure search-state reducer with out-of-order requests, terminal events and immutable payloads.",
+  "editableFiles": ["src/task.ts"],
+  "expectedTests": 18
+}

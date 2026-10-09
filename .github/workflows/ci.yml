@@ -1,0 +1,60 @@
+name: Verify Agent Arena
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: npm ci
+      - name: Verify the runner
+        run: npm test
+      - name: Verify every baseline compiles and fails its tests
+        run: |
+          mkdir -p reports
+          node scripts/arena.mjs baseline --report reports/baseline.json
+      - name: Reproduce committed candidate results
+        shell: bash
+        run: |
+          for mode in solo reviewed; do
+            candidate="experiments/session-2026-10-09/$mode"
+            if [ ! -d "$candidate" ]; then
+              continue
+            fi
+            set +e
+            node scripts/arena.mjs evaluate --candidate "$candidate" --report "reports/$mode.json"
+            result=$?
+            set -e
+            case "$result" in
+              0) echo "$mode: every task passed" ;;
+              1) echo "$mode: candidate failures recorded in the report" ;;
+              *) echo "$mode: benchmark configuration or infrastructure error"; exit "$result" ;;
+            esac
+          done
+      - name: Retain the actual reports
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: agent-arena-reports
+          path: reports/*.json
+          if-no-files-found: ignore
+          retention-days: 7

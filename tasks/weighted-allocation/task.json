@@ -1,0 +1,8 @@
+{
+  "id": "weighted-allocation",
+  "title": "Make every cent add up",
+  "language": "java",
+  "summary": "Repair proportional money allocation with exact arithmetic and stable remainder ties.",
+  "editableFiles": ["src/Task.java"],
+  "expectedTests": 15
+}

@@ -1,0 +1,8 @@
+{
+  "id": "sliding-window",
+  "title": "Repair the rate-limit boundary",
+  "language": "java",
+  "summary": "Repair a deterministic sliding-window limiter, including expired entries and reduced limits.",
+  "editableFiles": ["src/Task.java"],
+  "expectedTests": 14
+}

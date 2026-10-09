@@ -1,0 +1,8 @@
+{
+  "id": "optimistic-ledger",
+  "title": "Roll back only your own optimistic update",
+  "language": "typescript",
+  "summary": "Repair immutable optimistic counter updates when acknowledgements arrive out of order or twice.",
+  "editableFiles": ["src/task.ts"],
+  "expectedTests": 16
+}

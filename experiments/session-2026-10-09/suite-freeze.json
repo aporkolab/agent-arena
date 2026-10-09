@@ -1,0 +1,27 @@
+{
+  "frozenAt": "2026-10-09T06:10:56.910699+00:00",
+  "suiteDigest": "1bc14fcf62cc9184a9847a1e0dd8fa9508cb80f7324194740cea2b8b09261c0c",
+  "files": {
+    "optimistic-ledger/brief.md": "5c9d446ee87c3558242a06febd013bd5e445b5356067a6db7ed21bd9ca7caa39",
+    "optimistic-ledger/src/task.ts": "8fb980338318cba6e0ffd60c36c81472b8a383e8d21636d34ac048561681d4da",
+    "optimistic-ledger/task.json": "c3a7a25d403c007ffe1aef5cbca2c6b5df994ce1f59722829dbfe5b52915a147",
+    "optimistic-ledger/tests/task.test.ts": "35bdbbbb7e8cd4e63d54b237a65c0245c59c3bc6527fed4597e62f3cbe885313",
+    "request-state/brief.md": "2b0a4ec1d8be446d136a0c4b98c4b7a262ca8a3ae3bc82761072b95716a53039",
+    "request-state/src/task.ts": "36cb18957de779ceb08e88ad9522beaf0766833ce6576d5c12b5e23a4299772e",
+    "request-state/task.json": "faa0dd2f1ddffdf2f8230fb1382dfd382714b3dace67b430978dcf3c145a6905",
+    "request-state/tests/task.test.ts": "675acfbd9a92b037a6bcf9e62518f4ae5cc68456d7da8b8a3ca057c440fd0988",
+    "retry-policy/brief.md": "1ba520681573d94e64bdc304b9b5a3f155280f27928a7b54b379a4cfd49dd93c",
+    "retry-policy/src/Task.java": "8ef448b7cce070feb69141438046a4091edd353fb1a725c7f5e8a6f0d0729eec",
+    "retry-policy/task.json": "a6cd587dd51518a0aaa81f83223848ed88961bfe2793486816c62a09281bb723",
+    "retry-policy/tests/TaskTest.java": "c7b2d60f1df32c3490da6827892953d5c38c7dbf8d471a87b57d5ab820e3df76",
+    "sliding-window/brief.md": "d8cba952eb81b5b603e6ff4326d8a6d6f3b4f0d1acabde7dfecbbd1f95857d06",
+    "sliding-window/src/Task.java": "c3ae7f8795cef2cb5deefde40b9de4ab51b5325e6b94189702c22e6f84656e6a",
+    "sliding-window/task.json": "c28ef5ae5bcbc8a83b3f1432460eeae23eeca5b1052a1f306f1471566ac2b0e6",
+    "sliding-window/tests/TaskTest.java": "4b1e683907e491cd2098f5f0b3ec6ed448de66739463785ae78c81160837c8f6",
+    "weighted-allocation/brief.md": "cb2acb319c1bc55b111a401f4a1e9a8d05284ccc45d5d034892dfe38330aa500",
+    "weighted-allocation/src/Task.java": "b7c1c05fc9c9017e49fbbdaa8d320a04207126eca3b94b02c427e89d0b584a3a",
+    "weighted-allocation/task.json": "38bf2b7efc6060988b6d011919708ad2a341c29887197b49b5166d24545149f4",
+    "weighted-allocation/tests/TaskTest.java": "971a96dd5317e288c4578f7efc2e8e6de27648b914a3a9862d9c7923bc86381d"
+  },
+  "rule": "No task or test changes after candidate access."
+}

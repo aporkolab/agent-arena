@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="An inspectable, open-test experiment comparing solo and reviewed agent repair workflows. Read the tasks, diffs, and test output.">
+  <meta name="theme-color" content="#f4f5f1">
+  <title>Agent Arena · Repair workflow lab</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to results</a>
+  <header class="masthead page-width">
+    <a class="brand" href="./" aria-label="Agent Arena home">
+      <svg viewBox="0 0 40 40" width="36" height="36" fill="none" aria-hidden="true"><rect x="3" y="9" width="34" height="27" rx="9" fill="currentColor"/><path d="M20 9V4" stroke="currentColor" stroke-width="3"/><circle cx="20" cy="3" r="3" fill="#86bfad"/><path d="M12 20v4m16-4v4" stroke="#eaf2ee" stroke-width="3" stroke-linecap="round"/><path d="M16 29h8" stroke="#b9dcca" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>AGENT<span class="brand-light">ARENA</span><small>REPAIR WORKFLOW LAB</small></span>
+    </a>
+    <nav class="top-links" aria-label="Project links">
+      <a href="https://github.com/aporkolab/agent-arena#reproduce">Reproduce <span aria-hidden="true">↗</span></a>
+      <a href="https://github.com/aporkolab/agent-arena">Source <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <main id="main" class="page-width">
+    <section class="intro" aria-labelledby="page-title">
+      <div class="intro-copy">
+        <p class="eyebrow"><span class="dot"></span> OPEN TEST / SINGLE SESSION</p>
+        <h1 id="page-title">Inside the<br><span>repair loop.</span></h1>
+        <p class="lead">A small repair bench for two agent workflows: solo implementation and implementation with a separate review. Open the brief. Read the patch. Inspect the test result.</p>
+      </div>
+      <aside class="lab-note" aria-labelledby="lab-note-title">
+        <div class="note-heading"><span class="note-marker" aria-hidden="true">↳</span><h2 id="lab-note-title">The experiment, honestly.</h2></div>
+        <p>Five Java and TypeScript repair tasks. Public tests. One session. This is a workflow experiment, not a general model ranking.</p>
+        <p class="fine-print">Model identity, tokens, and cost appear only when exported. A separate review is a process step, not evidence of a different model.</p>
+      </aside>
+    </section>
+
+    <section class="session-strip" aria-label="Report information">
+      <div class="session-state"><span id="load-dot" class="status-light" aria-hidden="true"></span><p id="load-state" role="status">Loading exported report…</p></div>
+      <dl class="session-meta">
+        <div><dt>SESSION</dt><dd id="session-id">NOT EXPORTED</dd></div>
+        <div><dt>EXPORTED</dt><dd id="exported-at">NOT EXPORTED</dd></div>
+      </dl>
+      <button id="reload" class="quiet-button" type="button" aria-label="Reload exported report">Reload <span aria-hidden="true">↻</span></button>
+    </section>
+
+    <noscript><p class="disclosure">This results viewer needs JavaScript. You can still read the <a href="data/experiment.json">exported JSON</a> or inspect the <a href="https://github.com/aporkolab/agent-arena">source repository</a>.</p></noscript>
+
+    <section id="empty-state" class="empty-state" hidden aria-labelledby="empty-title">
+      <svg class="empty-illustration" viewBox="0 0 180 110" width="180" height="110" fill="none" aria-hidden="true"><path d="M20 90h140" stroke="#c9d3cd" stroke-width="2"/><rect x="48" y="26" width="84" height="61" rx="17" fill="#dde7df" stroke="#1e3448" stroke-width="2"/><path d="M90 26V14" stroke="#1e3448" stroke-width="2"/><circle cx="90" cy="11" r="5" fill="#cfc4e7" stroke="#1e3448" stroke-width="2"/><path d="M69 46v8m42-8v8" stroke="#1e3448" stroke-width="4" stroke-linecap="round"/><path d="M78 70h24" stroke="#1e3448" stroke-width="2" stroke-linecap="round"/><path d="M37 49h-8v19h8m106-19h8v19h-8" stroke="#1e3448" stroke-width="2"/><path d="m140 20 4-6m7 13 7-1" stroke="#a599c0" stroke-width="2" stroke-linecap="round"/></svg>
+      <p class="eyebrow">BENCH READY</p>
+      <h2 id="empty-title">No run has been exported yet.</h2>
+      <p id="empty-description">The viewer is ready. Results will appear here when the experiment produces an exported report. There are no sample scores standing in for measurements.</p>
+      <a class="text-link" href="https://github.com/aporkolab/agent-arena">Inspect the experiment source <span aria-hidden="true">↗</span></a>
+    </section>
+
+    <div id="results" hidden>
+      <section class="overview" aria-labelledby="overview-title">
+        <div class="section-heading"><div><p class="eyebrow">01 / RUN RECORD</p><h2 id="overview-title">What was measured</h2></div><a class="text-link" href="data/experiment.json" download>Exported JSON <span aria-hidden="true">↓</span></a></div>
+        <p id="disclosure" class="disclosure"></p>
+        <div class="table-wrap" tabindex="0" role="region" aria-label="Workflow results, scroll horizontally on small screens">
+          <table>
+            <caption class="sr-only">Recorded results for each workflow. Missing measurements are marked NOT EXPORTED.</caption>
+            <thead><tr><th scope="col">Workflow</th><th scope="col">Task checks</th><th scope="col">Workflow time</th><th scope="col">Runner time</th><th scope="col">Model</th><th scope="col">Tokens</th><th scope="col">Cost</th></tr></thead>
+            <tbody id="workflow-table"></tbody>
+          </table>
+        </div>
+        <p class="table-note">Runner time covers local compilation and tests. Workflow time can include scheduling and waiting, so it is not model speed. The workflows use different amounts of work: a review adds another pass. Passing public tests does not guarantee correctness.</p>
+      </section>
+
+      <section class="inspection" aria-labelledby="inspection-title">
+        <div class="section-heading"><div><p class="eyebrow">02 / OPEN THE RECORD</p><h2 id="inspection-title">Inspect the repairs.</h2></div><p class="section-caption">Choose a workflow, then a task.</p></div>
+        <div id="workflow-switch" class="workflow-switch" role="group" aria-label="Select workflow"></div>
+        <div class="inspector">
+          <aside class="task-sidebar" aria-label="Repair tasks">
+            <div class="sidebar-heading"><h3>Repair tasks</h3><span id="task-count"></span></div>
+            <div id="task-list" class="task-list"></div>
+          </aside>
+          <article class="task-detail" aria-labelledby="task-title">
+            <div class="task-detail-heading"><div><p id="task-language" class="eyebrow"></p><h3 id="task-title">Select a task</h3></div><span id="task-status" class="badge"></span></div>
+            <dl class="task-metrics"><div><dt>TEST EXECUTION</dt><dd id="task-duration">NOT EXPORTED</dd></div><div><dt>TASK ID</dt><dd id="task-id">NOT EXPORTED</dd></div></dl>
+            <div class="evidence-toolbar"><div class="evidence-tabs" role="tablist" aria-label="Task evidence"><button id="tab-brief" role="tab" aria-selected="true" aria-controls="evidence-panel" data-tab="brief" type="button">Brief</button><button id="tab-diff" role="tab" aria-selected="false" aria-controls="evidence-panel" data-tab="diff" tabindex="-1" type="button">Patch diff</button><button id="tab-log" role="tab" aria-selected="false" aria-controls="evidence-panel" data-tab="log" tabindex="-1" type="button">Test output</button></div><button id="copy-evidence" class="quiet-button" type="button">Copy</button></div>
+            <div id="evidence-panel" class="evidence-panel" role="tabpanel" aria-labelledby="tab-brief" tabindex="0"><pre id="evidence-content"></pre></div>
+            <p id="copy-status" class="sr-only" role="status"></p>
+          </article>
+        </div>
+      </section>
+    </div>
+
+    <section class="method-note" aria-labelledby="method-title"><p class="eyebrow">READING THIS LAB</p><div><h2 id="method-title">A small experiment should make small claims.</h2><p>Tasks and tests are visible to the agents. The runs belong to one session. Task outcomes, patches, and exported timings are evidence you can inspect; they are not a controlled study of model quality. Missing telemetry stays missing.</p><a class="text-link" href="https://github.com/aporkolab/agent-arena#reproduce">Read the method and reproduce the checks <span aria-hidden="true">↗</span></a></div></section>
+  </main>
+  <footer class="page-width footer"><span>A public experiment by <a href="https://github.com/aporkolab">Ádám Porkoláb</a>.</span><span>Built to be inspected.</span></footer>
+</body>
+</html>
