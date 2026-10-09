@@ -1,0 +1,264 @@
+{
+  "schemaVersion": 1,
+  "mode": "evaluate",
+  "startedAt": "2026-10-09T06:14:09.332Z",
+  "completedAt": "2026-10-09T06:14:13.606Z",
+  "durationMs": 4274,
+  "suiteDigest": "1bc14fcf62cc9184a9847a1e0dd8fa9508cb80f7324194740cea2b8b09261c0c",
+  "toolchain": {
+    "node": "v24.19.0",
+    "platform": "linux",
+    "arch": "x64",
+    "osRelease": "6.18.44",
+    "java": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+    "javac": "javac 21.0.12.1",
+    "typescript": "5.8.3"
+  },
+  "runnerSha256": "a694625ed570e2e3ef9ce49cd4525e4b893d41674a0ad24bb5eaf80d807f6f79",
+  "candidate": {
+    "path": "experiments/session-2026-10-09/solo",
+    "digest": "6bf25af4e3048ab381e46110cc6adf6d9c1be7c5d4ba7b8052e28a9e17609e75",
+    "files": {
+      "optimistic-ledger/src/task.ts": "a2f14bee2a68efb1b7eeb7c2272096f3b1695c2437ce0240334b11774c6221ec",
+      "request-state/src/task.ts": "7ca6d37c2d0ab25ebc88974b78b5736b6fff4c925003903d1448f61f0892d407",
+      "retry-policy/src/Task.java": "5e0ecbfa9ed5c052f2b65611f8f23d297b4f9d432766643417045465dbcb14fb",
+      "sliding-window/src/Task.java": "90d663fbbc144e7ae531d2bbe1eb144e2538128305a32d1b598b27b2b0b83177",
+      "weighted-allocation/src/Task.java": "92a5a539ec82a7ad4eeab999a8d4ca643669b82aa575a6a2bbdf60361efa8679"
+    }
+  },
+  "disclosure": "Local compilation and test timings only. No model requests, token usage or cost are measured. This runner is not a security sandbox.",
+  "tasks": [
+    {
+      "id": "optimistic-ledger",
+      "title": "Roll back only your own optimistic update",
+      "language": "typescript",
+      "status": "pass",
+      "phase": "test",
+      "expectedTests": 16,
+      "observedTests": 16,
+      "expectedFailureObserved": false,
+      "sourceSha256": {
+        "src/task.ts": "a2f14bee2a68efb1b7eeb7c2272096f3b1695c2437ce0240334b11774c6221ec"
+      },
+      "sourceDigest": "13edb4a37999cd4887c3391c60e8c7a714910cc53bb789eda912054105f3b3c0",
+      "testSha256": "35bdbbbb7e8cd4e63d54b237a65c0245c59c3bc6527fed4597e62f3cbe885313",
+      "candidateDiffHashes": [
+        {
+          "path": "src/task.ts",
+          "beforeSha256": "8fb980338318cba6e0ffd60c36c81472b8a383e8d21636d34ac048561681d4da",
+          "afterSha256": "a2f14bee2a68efb1b7eeb7c2272096f3b1695c2437ce0240334b11774c6221ec",
+          "diffSha256": "ee9ddb90c7a2fcf221a7887262b567120503669c735f5f81a7fe8681a9258afd"
+        }
+      ],
+      "compile": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 906,
+        "stdout": "",
+        "stderr": ""
+      },
+      "test": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 43,
+        "stdout": "ARENA_TESTS_PASSED=16\n",
+        "stderr": ""
+      },
+      "testDurationMs": 43,
+      "durationMs": 952
+    },
+    {
+      "id": "request-state",
+      "title": "Keep stale responses out of the UI",
+      "language": "typescript",
+      "status": "pass",
+      "phase": "test",
+      "expectedTests": 18,
+      "observedTests": 18,
+      "expectedFailureObserved": false,
+      "sourceSha256": {
+        "src/task.ts": "7ca6d37c2d0ab25ebc88974b78b5736b6fff4c925003903d1448f61f0892d407"
+      },
+      "sourceDigest": "c1f9c6599cddd99eb3ae07b6a167cc09eec60da89121ccf68c82d9afc208c00a",
+      "testSha256": "675acfbd9a92b037a6bcf9e62518f4ae5cc68456d7da8b8a3ca057c440fd0988",
+      "candidateDiffHashes": [
+        {
+          "path": "src/task.ts",
+          "beforeSha256": "36cb18957de779ceb08e88ad9522beaf0766833ce6576d5c12b5e23a4299772e",
+          "afterSha256": "7ca6d37c2d0ab25ebc88974b78b5736b6fff4c925003903d1448f61f0892d407",
+          "diffSha256": "2f61c8179229bbc85aaa122cf5ea2620773dea89cd6b62d74b1bbe853c2d8899"
+        }
+      ],
+      "compile": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 752,
+        "stdout": "",
+        "stderr": ""
+      },
+      "test": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 38,
+        "stdout": "ARENA_TESTS_PASSED=18\n",
+        "stderr": ""
+      },
+      "testDurationMs": 38,
+      "durationMs": 793
+    },
+    {
+      "id": "retry-policy",
+      "title": "Put a ceiling on retries",
+      "language": "java",
+      "status": "pass",
+      "phase": "test",
+      "expectedTests": 17,
+      "observedTests": 17,
+      "expectedFailureObserved": false,
+      "sourceSha256": {
+        "src/Task.java": "5e0ecbfa9ed5c052f2b65611f8f23d297b4f9d432766643417045465dbcb14fb"
+      },
+      "sourceDigest": "8bae308b27850828212628829081fbadc18b90522ac184130e13014ce2eb30a7",
+      "testSha256": "c7b2d60f1df32c3490da6827892953d5c38c7dbf8d471a87b57d5ab820e3df76",
+      "candidateDiffHashes": [
+        {
+          "path": "src/Task.java",
+          "beforeSha256": "8ef448b7cce070feb69141438046a4091edd353fb1a725c7f5e8a6f0d0729eec",
+          "afterSha256": "5e0ecbfa9ed5c052f2b65611f8f23d297b4f9d432766643417045465dbcb14fb",
+          "diffSha256": "c346a37c6b48cf7f9a4c0f25345a6dafa8c3e4e6167ca4ce6c7a62a1dcb10d2a"
+        }
+      ],
+      "compile": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 688,
+        "stdout": "",
+        "stderr": ""
+      },
+      "test": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 56,
+        "stdout": "ARENA_TESTS_PASSED=17\n",
+        "stderr": ""
+      },
+      "testDurationMs": 56,
+      "durationMs": 746
+    },
+    {
+      "id": "sliding-window",
+      "title": "Repair the rate-limit boundary",
+      "language": "java",
+      "status": "pass",
+      "phase": "test",
+      "expectedTests": 14,
+      "observedTests": 14,
+      "expectedFailureObserved": false,
+      "sourceSha256": {
+        "src/Task.java": "90d663fbbc144e7ae531d2bbe1eb144e2538128305a32d1b598b27b2b0b83177"
+      },
+      "sourceDigest": "b8c59bb72896b17f2bcae996d418cfc10598cd529defbe34ab063d01be1ff6e2",
+      "testSha256": "4b1e683907e491cd2098f5f0b3ec6ed448de66739463785ae78c81160837c8f6",
+      "candidateDiffHashes": [
+        {
+          "path": "src/Task.java",
+          "beforeSha256": "c3ae7f8795cef2cb5deefde40b9de4ab51b5325e6b94189702c22e6f84656e6a",
+          "afterSha256": "90d663fbbc144e7ae531d2bbe1eb144e2538128305a32d1b598b27b2b0b83177",
+          "diffSha256": "ae8c879dceb191959a5ed82606b7621cfbde20a3a444a913fbfc96543173ce52"
+        }
+      ],
+      "compile": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 673,
+        "stdout": "",
+        "stderr": ""
+      },
+      "test": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 49,
+        "stdout": "ARENA_TESTS_PASSED=14\n",
+        "stderr": ""
+      },
+      "testDurationMs": 49,
+      "durationMs": 724
+    },
+    {
+      "id": "weighted-allocation",
+      "title": "Make every cent add up",
+      "language": "java",
+      "status": "pass",
+      "phase": "test",
+      "expectedTests": 15,
+      "observedTests": 15,
+      "expectedFailureObserved": false,
+      "sourceSha256": {
+        "src/Task.java": "92a5a539ec82a7ad4eeab999a8d4ca643669b82aa575a6a2bbdf60361efa8679"
+      },
+      "sourceDigest": "a7a5d15776400edc926e74f3cd08dc0eb2d037240d236c08eabc795b4f92fc91",
+      "testSha256": "971a96dd5317e288c4578f7efc2e8e6de27648b914a3a9862d9c7923bc86381d",
+      "candidateDiffHashes": [
+        {
+          "path": "src/Task.java",
+          "beforeSha256": "b7c1c05fc9c9017e49fbbdaa8d320a04207126eca3b94b02c427e89d0b584a3a",
+          "afterSha256": "92a5a539ec82a7ad4eeab999a8d4ca643669b82aa575a6a2bbdf60361efa8679",
+          "diffSha256": "e255df8ee858fcc7c0036ca4f24af020eea785a95053184e63a7ae0a2927cce2"
+        }
+      ],
+      "compile": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 679,
+        "stdout": "",
+        "stderr": ""
+      },
+      "test": {
+        "exitCode": 0,
+        "signal": null,
+        "timedOut": false,
+        "outputTruncated": false,
+        "spawnError": null,
+        "durationMs": 90,
+        "stdout": "ARENA_TESTS_PASSED=15\n",
+        "stderr": ""
+      },
+      "testDurationMs": 90,
+      "durationMs": 772
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "errors": 0,
+    "expectedBaselineFailures": 0
+  }
+}

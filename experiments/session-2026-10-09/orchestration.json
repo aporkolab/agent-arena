@@ -1,0 +1,55 @@
+{
+  "id": "session-2026-10-09",
+  "frozenCommit": "baa8a83105d7be9c80b1937430dcf6bb74680d77",
+  "suiteDigest": "1bc14fcf62cc9184a9847a1e0dd8fa9508cb80f7324194740cea2b8b09261c0c",
+  "dispatchWindowStartedAt": "2026-10-09T06:12:20.910Z",
+  "dispatchWindowCompletedAt": "2026-10-09T06:13:34.012Z",
+  "method": "Two separately dispatched agents with no inherited conversation; same assignment except candidate/report paths. Root wall clock includes dispatch preparation, scheduling, tool execution and orchestration.",
+  "telemetry": {
+    "model": null,
+    "tokens": null,
+    "costUsd": null,
+    "reason": "The orchestration interface did not export these fields."
+  },
+  "stages": [
+    {
+      "workflow": "solo",
+      "stage": "implementation",
+      "agent": "arena_solo_run",
+      "startedAt": "2026-10-09T06:12:20.910Z",
+      "finishedAt": "2026-10-09T06:14:51.254Z",
+      "wallTimeMs": 150344
+    },
+    {
+      "workflow": "reviewed",
+      "stage": "implementation",
+      "agent": "arena_reviewed_implementation",
+      "startedAt": "2026-10-09T06:12:20.910Z",
+      "finishedAt": "2026-10-09T06:15:56.751Z",
+      "wallTimeMs": 215841
+    },
+    {
+      "workflow": "reviewed",
+      "stage": "independent-review",
+      "agent": "arena_cold_reviewer",
+      "startedAt": "2026-10-09T06:17:04.509Z",
+      "finishedAt": "2026-10-09T06:19:16.072Z",
+      "wallTimeMs": 131563
+    }
+  ],
+  "reviewDispatchStartedAt": "2026-10-09T06:17:04.509Z",
+  "finishedAt": "2026-10-09T06:19:16.072Z",
+  "reviewerChangedSource": false,
+  "outcomes": {
+    "solo": {
+      "passed": 5,
+      "total": 5,
+      "testCasesPassed": 80
+    },
+    "reviewed": {
+      "passed": 5,
+      "total": 5,
+      "testCasesPassed": 80
+    }
+  }
+}

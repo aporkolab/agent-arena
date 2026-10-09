@@ -9,7 +9,20 @@ A small, local benchmark for coding workflows: one agent working alone, or an im
 
 [Browse the report](https://aporkolab.github.io/agent-arena/) · [Read the tasks](tasks/) · [Inspect the experiments](experiments/)
 
-## Run it
+## Recorded session
+
+The [2026-10-09 session](experiments/session-2026-10-09/protocol.md) used the task suite frozen in commit [`baa8a831`](https://github.com/aporkolab/agent-arena/commit/baa8a83105d7be9c80b1937430dcf6bb74680d77), before either implementation agent received it.
+
+| Workflow | Tasks passed | Public cases passed | Independent review |
+| :--- | :--- | :--- | :--- |
+| Solo implementation | 5 / 5 | 80 / 80 | None |
+| Implementation + review | 5 / 5 | 80 / 80 | No defects found; no source changes |
+
+This session is a tie. The [review notes](experiments/session-2026-10-09/review-notes.md), implementation snapshot, final candidates and raw reports are retained. The two implementations were independently generated. One session cannot establish that review improves outcomes or that either workflow is faster.
+
+The published site is a **static replay**. Visiting it or reloading its report never starts an agent, model API call, Codespace or CI job. The repository has no model endpoint or AI credentials. CI only compiles and tests saved code on standard GitHub-hosted runners.
+
+## Reproduce
 
 You need **Node.js 20+**, **JDK 17+** (`java` and `javac`) and npm. TypeScript is installed from the lockfile.
 
@@ -64,7 +77,7 @@ The runner does not call a model or choose a provider. It evaluates source files
 | `evaluate`: `1` | At least one candidate task failed. This is a benchmark result. |
 | `evaluate`: `2` | Bad configuration or a runner/setup problem. Do not score this as a model failure. |
 
-The JSON report records the local run. Wall-clock timing measures execution on that machine; it is **not** model generation time, token usage or cost. Task outcomes are evidence about these particular tasks and candidate snapshots, not a general ranking of models or a causal estimate of review effectiveness.
+The runner JSON records compilation and test execution time on that machine. The separately recorded workflow wall time spans root dispatch preparation to receipt of the final agent result, including scheduling, handoff pauses and concurrent publishing work. Neither is a model-latency measurement. Model identity, token usage and billed generation cost were not exported and remain null. Task outcomes describe these particular tasks and candidate snapshots.
 
 Public tests make this a transparent workflow demonstration. They are not a private holdout set, and a solver can overfit them. Read the code and recorded process as well as the score.
 

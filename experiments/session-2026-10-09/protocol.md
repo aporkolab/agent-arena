@@ -15,7 +15,7 @@ The primary outcome is the number of tasks whose complete trusted test program p
 
 ## Recorded measurements
 
-- Workflow wall time spans dispatch to receipt of the final agent result. It includes tool execution, scheduling and orchestration overhead. The reviewed workflow includes its extra review stage.
+- Workflow wall time spans root dispatch preparation to receipt of the final agent result. It includes tool execution, scheduling, handoff pauses and concurrent publishing work. The dispatch window is recorded explicitly. The reviewed workflow includes its extra review stage. These are observed session durations, not speed comparisons.
 - Compile time and test execution time come from the local runner. They are distinct from agent work and workflow wall time.
 - Suite, candidate and diff hashes identify the exact evaluated inputs.
 - Model identity, token usage and billed cost are not exported by this session's orchestration tools. They are recorded as null, not estimated or represented as zero.
