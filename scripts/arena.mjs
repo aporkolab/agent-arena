@@ -66,7 +66,10 @@ export async function loadSuite(root = ROOT) {
     if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id)) throw new Error(`Invalid task directory: ${id}`);
     const raw = tree.get(`${id}/task.json`);
     if (!raw) throw new Error(`Missing task.json: ${id}`);
-    const metadata = JSON.parse(raw.toString('utf8'));
+    let metadata;
+    try { metadata = JSON.parse(raw.toString('utf8')); } catch (error) {
+      throw new Error(`Invalid task.json for ${id}: ${error.message}`);
+    }
     if (metadata.id !== id || !['java', 'typescript'].includes(metadata.language) ||
         typeof metadata.title !== 'string' || typeof metadata.summary !== 'string' ||
         !Number.isSafeInteger(metadata.expectedTests) || metadata.expectedTests < 1 ||
@@ -229,18 +232,30 @@ export function parseArgs(args) {
   const [command, ...rest] = args;
   if (!['list', 'baseline', 'evaluate'].includes(command)) throw new Error('Usage: arena.mjs list | baseline [--report PATH] | evaluate --candidate DIRECTORY [--task ID] [--report PATH] [--timeout-ms N]');
   const options = { command, timeoutMs: 10000 };
+  const seen = new Set();
   for (let index = 0; index < rest.length; index += 2) {
     const key = rest[index];
     const value = rest[index + 1];
     if (!['--candidate', '--report', '--task', '--timeout-ms'].includes(key) || !value || value.startsWith('--')) throw new Error(`Invalid option: ${key}`);
     const field = { '--candidate': 'candidate', '--report': 'report', '--task': 'task', '--timeout-ms': 'timeoutMs' }[key];
-    if (field !== 'timeoutMs' && options[field]) throw new Error(`Repeated option: ${key}`);
+    if (seen.has(key)) throw new Error(`Repeated option: ${key}`);
+    seen.add(key);
     options[field] = field === 'timeoutMs' ? Number(value) : value;
   }
   if (!Number.isSafeInteger(options.timeoutMs) || options.timeoutMs < 100 || options.timeoutMs > 60000) throw new Error('Timeout must be an integer from 100 to 60000 milliseconds');
   if ((command === 'evaluate') !== Boolean(options.candidate)) throw new Error('--candidate is required only for evaluate');
   if (options.task) relativePath(options.task);
   return options;
+}
+
+export async function reportTarget(report, root = ROOT) {
+  await rejectSymlinks(report);
+  const target = path.resolve(report);
+  for (const trusted of ['tasks', 'scripts']) {
+    const directory = path.join(root, trusted);
+    if (target === directory || target.startsWith(directory + path.sep)) throw new Error('Reports cannot overwrite trusted tasks or runner scripts');
+  }
+  return target;
 }
 
 export async function main(args = process.argv.slice(2)) {
@@ -256,6 +271,7 @@ export async function main(args = process.argv.slice(2)) {
     console.log(JSON.stringify({ suiteDigest: suite.digest, tasks: tasks.map(({ files, sourcePath, testPath, ...metadata }) => metadata) }, null, 2));
     return 0;
   }
+  const target = options.report ? await reportTarget(options.report) : null;
   const candidate = await loadCandidate(options.candidate, suite.tasks);
   const versions = await toolchain(tasks);
   const results = [];
@@ -280,10 +296,8 @@ export async function main(args = process.argv.slice(2)) {
       expectedBaselineFailures: results.filter(task => task.expectedFailureObserved).length,
     },
   };
-  if (options.report) {
+  if (target) {
     await rejectSymlinks(options.report);
-    const target = path.resolve(options.report);
-    if (target.startsWith(path.join(ROOT, 'tasks') + path.sep) || target.startsWith(path.join(ROOT, 'scripts') + path.sep)) throw new Error('Reports cannot overwrite trusted tasks or runner scripts');
     await fs.mkdir(path.dirname(target), { recursive: true });
     await fs.writeFile(target, JSON.stringify(report, null, 2) + '\n');
     console.log(JSON.stringify({ report: options.report, suiteDigest: report.suiteDigest, ...report.summary }));
