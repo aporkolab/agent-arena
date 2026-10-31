@@ -4,7 +4,7 @@ import { promises as fs } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { randomUUID } from 'node:crypto';
-import { relativePath, readTree, loadSuite, loadCandidate, runProcess, evaluateTask, parseArgs } from '../arena.mjs';
+import { relativePath, readTree, loadSuite, loadCandidate, runProcess, evaluateTask, parseArgs, reportTarget, ROOT } from '../arena.mjs';
 
 async function temporary(t) {
   const directory = await fs.mkdtemp(path.join(os.tmpdir(), 'arena-test-'));
@@ -124,4 +124,93 @@ test('CLI requires an explicit candidate and bounds its timeout', () => {
   assert.throws(() => parseArgs(['baseline', '--candidate', 'x']), /required/);
   assert.throws(() => parseArgs(['evaluate', '--candidate', 'x', '--timeout-ms', '0']), /Timeout/);
   assert.equal(parseArgs(['evaluate', '--candidate', 'x', '--task', 'sample']).task, 'sample');
+});
+
+test('CLI rejects every repeated option, including the timeout', () => {
+  assert.throws(() => parseArgs(['evaluate', '--candidate', 'x', '--timeout-ms', '500', '--timeout-ms', '60000']), /Repeated option: --timeout-ms/);
+  assert.throws(() => parseArgs(['evaluate', '--candidate', 'x', '--candidate', 'y']), /Repeated option: --candidate/);
+  assert.throws(() => parseArgs(['evaluate', '--candidate']), /Invalid option/);
+  assert.throws(() => parseArgs(['run']), /Usage/);
+});
+
+test('report target cannot point into trusted tasks or runner scripts', async t => {
+  const root = await temporary(t);
+  await assert.rejects(reportTarget(path.join(root, 'tasks', 'x.json'), root), /cannot overwrite/);
+  await assert.rejects(reportTarget(path.join(root, 'scripts'), root), /cannot overwrite/);
+  assert.equal(await reportTarget(path.join(root, 'reports', 'x.json'), root), path.join(root, 'reports', 'x.json'));
+});
+
+test('suite loading names the task with malformed or unsupported metadata', async t => {
+  const { root, directory } = await fixture(t);
+  await fs.writeFile(path.join(directory, 'task.json'), '{ not json');
+  await assert.rejects(loadSuite(root), /Invalid task.json for sample/);
+  await fs.writeFile(path.join(directory, 'task.json'), JSON.stringify({
+    id: 'sample', title: 'Sample', summary: 'x', language: 'python', editableFiles: ['src/task.ts'], expectedTests: 1,
+  }));
+  await assert.rejects(loadSuite(root), /Invalid metadata for sample/);
+  await fs.writeFile(path.join(directory, 'task.json'), JSON.stringify({
+    id: 'sample', title: 'Sample', summary: 'x', language: 'typescript', editableFiles: ['tests/task.test.ts'], expectedTests: 1,
+  }));
+  await assert.rejects(loadSuite(root), /Unsupported task layout: sample/);
+});
+
+test('a passing run must report exactly the expected number of tests', async t => {
+  const { suite } = await fixture(t);
+  const task = { ...suite.tasks[0], expectedTests: 2 };
+  const result = await evaluateTask(task, new Map([
+    ['sample/src/task.ts', Buffer.from('export function answer(): number { return 1; }\n')],
+  ]));
+  assert.equal(result.test.exitCode, 0);
+  assert.equal(result.observedTests, 1);
+  assert.equal(result.status, 'fail');
+  assert.match(result.reason, /marker/);
+});
+
+test('a candidate that does not compile fails without reaching the tests', async t => {
+  const { suite } = await fixture(t);
+  const result = await evaluateTask(suite.tasks[0], new Map([
+    ['sample/src/task.ts', Buffer.from('export function answer(): number { return "one"; }\n')],
+  ]));
+  assert.equal(result.status, 'fail');
+  assert.equal(result.reason, 'Compilation failed');
+  assert.equal(result.test, null);
+  assert.equal(result.expectedFailureObserved, false);
+});
+
+test('CLI exit codes separate results from configuration errors', async t => {
+  const cli = path.join(ROOT, 'scripts', 'arena.mjs');
+  const listed = await runProcess(process.execPath, [cli, 'list'], { timeoutMs: 20000 });
+  assert.equal(listed.exitCode, 0);
+  assert.ok(JSON.parse(listed.stdout).tasks.length >= 1);
+  const root = await temporary(t);
+  await fs.mkdir(path.join(root, 'unknown-task'));
+  await fs.writeFile(path.join(root, 'unknown-task', 'x.ts'), '');
+  const rejected = await runProcess(process.execPath, [cli, 'evaluate', '--candidate', root], { timeoutMs: 20000 });
+  assert.equal(rejected.exitCode, 2);
+  assert.match(rejected.stderr, /ARENA ERROR: Candidate file is not editable/);
+});
+
+test('Java tasks compile with javac and honour the completion marker', async t => {
+  const root = await temporary(t);
+  const directory = path.join(root, 'tasks', 'java-sample');
+  await fs.mkdir(path.join(directory, 'src'), { recursive: true });
+  await fs.mkdir(path.join(directory, 'tests'), { recursive: true });
+  await fs.writeFile(path.join(directory, 'task.json'), JSON.stringify({
+    id: 'java-sample', title: 'Java sample', summary: 'Return one.', language: 'java',
+    editableFiles: ['src/Task.java'], expectedTests: 1,
+  }));
+  await fs.writeFile(path.join(directory, 'src/Task.java'), 'final class Task { static int answer() { return 0; } }\n');
+  await fs.writeFile(path.join(directory, 'tests/TaskTest.java'),
+    'public final class TaskTest { public static void main(String[] args) {\n' +
+    '  if (Task.answer() != 1) throw new AssertionError("expected one");\n' +
+    '  System.out.println("ARENA_TESTS_PASSED=1"); } }\n');
+  const [task] = (await loadSuite(root)).tasks;
+  const broken = await evaluateTask(task, new Map());
+  assert.equal(broken.status, 'fail');
+  assert.equal(broken.expectedFailureObserved, true);
+  const fixed = await evaluateTask(task, new Map([
+    ['java-sample/src/Task.java', Buffer.from('final class Task { static int answer() { return 1; } }\n')],
+  ]));
+  assert.equal(fixed.status, 'pass');
+  assert.equal(fixed.observedTests, 1);
 });
