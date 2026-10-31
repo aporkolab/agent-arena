@@ -24,7 +24,7 @@ The published site is a **static replay**. Visiting it or reloading its report n
 
 ## Reproduce
 
-You need **Node.js 20+**, **JDK 17+** (`java` and `javac`) and npm. TypeScript is installed from the lockfile.
+You need **Node.js 20+** (CI uses Node.js 24 LTS), **JDK 17+** (`java` and `javac`; CI uses Temurin 17) and npm. TypeScript (currently 7.0) is installed from the lockfile. The recorded session ran on Node.js 24, JDK 21 and TypeScript 5.8.3; each report's `toolchain` field records the versions actually used. No environment variables are required.
 
 ```bash
 npm ci
@@ -75,7 +75,7 @@ The runner does not call a model or choose a provider. It evaluates source files
 | `baseline`: `0` | Every starter compiled and its tests failed as intended. |
 | `evaluate`: `0` | Every selected candidate task passed. |
 | `evaluate`: `1` | At least one candidate task failed. This is a benchmark result. |
-| `evaluate`: `2` | Bad configuration or a runner/setup problem. Do not score this as a model failure. |
+| `evaluate`: `2` | Bad configuration or a runner/setup problem (for example an invalid option, a non-editable candidate file or a report path inside `tasks/` or `scripts/`). Do not score this as a model failure. |
 
 The runner JSON records compilation and test execution time on that machine. The separately recorded workflow wall time spans root dispatch preparation to receipt of the final agent result, including scheduling, handoff pauses and concurrent publishing work. Neither is a model-latency measurement. Model identity, token usage and billed generation cost were not exported and remain null. Task outcomes describe these particular tasks and candidate snapshots.
 
